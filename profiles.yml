@@ -1,0 +1,14 @@
+# dbt profile for dbt_bergkvara
+# Replace <adapter>, <user>, <password>, <host>, <port>, <database>, <schema> with your actual values
+
+bergkvara_dbt_fabric:
+  target: dev
+  outputs:
+    dev:
+      type: fabric
+      host: gkleqype752etknc2uqqyigdi4-mydg3aaewa2utex32ut4pq6pje.datawarehouse.fabric.microsoft.com
+      database: wh_gold_proplan
+      schema: philip_dev
+      authentication: CLI
+      driver: ODBC Driver 18 for SQL Server
+      threads: 4
