@@ -8,11 +8,25 @@ with customers as (
 customer_types as (
     select *
     from {{ ref('stg_customertypes_proplan') }}
+),
+deduped_customers as (
+    select *
+    from (
+        select
+            customers.*,
+            row_number() over (
+                partition by customers."number"
+                order by customers.id
+            ) as customer_rank
+        from customers
+        where customers.company_id = 1
+    ) ranked_customers
+    where customer_rank = 1
 )
 
 select
-    customers.*,
+    deduped_customers.*,
     customer_types.name as customer_type_name
-from customers
+from deduped_customers
 left join customer_types
-    on customers.customertype_id = customer_types.id
+    on deduped_customers.customertype_id = customer_types.id
